@@ -13,9 +13,13 @@ import {
 import PageIntro from "../PageIntro";
 import ExternalLink from "../ExternalLink";
 import PlatformIcon from "../icons/PlatformIcon";
-import { getGamingChannels } from "../../data/ecosystem";
+import {
+  getGamingChannels,
+  platformLabels,
+  validatePlatformUrl,
+} from "../../data/ecosystem";
 import useBrands from "../../hooks/useBrands";
-import BrandCard from "../ecosystem/BrandCard";
+import aboutPortrait from "../../assets/ocvoivoii-about.jpeg";
 
 const milestones = [
   {
@@ -23,18 +27,21 @@ const milestones = [
     description:
       "Một nơi chia sẻ trải nghiệm chơi game, những pha xử lý và câu chuyện trong mỗi buổi livestream.",
     Icon: Gamepad2,
+    id: "xay-dung-gaming",
   },
   {
-    title: "Kết nối Hang Ocvoivoii",
+    title: "Xây dựng Hang Ocvoivoii",
     description:
       "Từ những người xem xa lạ thành một cộng đồng có thể trò chuyện, tìm đồng đội và chơi cùng nhau.",
     Icon: Users,
+    id: "ket-noi-cong-dong",
   },
   {
-    title: "Mang Ốc Thượng Đài lên sóng",
+    title: "Ốc Thượng Đài lên sóng",
     description:
       "Tạo sân chơi cộng đồng để người tham gia được thi đấu, giao lưu và có khoảnh khắc của riêng mình.",
     Icon: Trophy,
+    id: "oc-thuong-dai",
   },
 ];
 
@@ -70,20 +77,53 @@ export default function About() {
         title="Chào bạn, mình là Ốc."
         description="Một người thích game, những chuyến đi và việc kể lại những trải nghiệm đó theo cách gần gũi nhất."
       />
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-12">
+        <aside className="glass-panel min-w-0 self-start overflow-hidden p-5 sm:p-7 lg:col-span-4">
+          <p className="eyebrow mb-5">Người chơi · Người kể chuyện</p>
 
-      <div className="grid gap-5 lg:grid-cols-12">
-        <article className="glass-panel relative overflow-hidden p-7 sm:p-9 lg:col-span-8">
+          <div className="relative h-[320px] overflow-hidden rounded-2xl bg-slate-950/50 sm:h-[380px] lg:h-[360px]">
+            <img
+              src={aboutPortrait}
+              alt="Nguyễn Chí Công — Ocvoivoii"
+              width={900}
+              height={1200}
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
+            />
+
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent"
+            />
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            {["Gaming", "Livestream", "Du lịch", "Âm nhạc"].map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </aside>
+
+        <article className="glass-panel relative min-w-0 overflow-hidden p-7 sm:p-9 lg:col-span-8">
           <div
             aria-hidden="true"
             className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-purple-500/15 blur-3xl"
           />
           <div className="relative">
-            <span className="icon-tile">
-              <Mic2 aria-hidden="true" className="h-6 w-6" />
-            </span>
-            <h2 className="mt-6 text-2xl font-black text-white">
-              Hành trình Ocvoivoii
-            </h2>
+            <div className="flex items-center gap-4">
+              <span className="icon-tile shrink-0">
+                <Mic2 aria-hidden="true" className="h-6 w-6" />
+              </span>
+
+              <h2 className="min-w-0 text-2xl font-black leading-tight text-white">
+                Hành trình trở thành Ocvoivoii
+              </h2>
+            </div>
             <div className="mt-5 space-y-4 text-sm leading-8 text-slate-300 sm:text-base">
               <p>
                 Mình là Nguyễn Chí Công, được mọi người biết đến với cái tên
@@ -101,61 +141,117 @@ export default function About() {
                 đồng đội hay cả phòng cùng bật cười.
               </p>
             </div>
-            <Link to="/register" className="btn-primary mt-7">
-              Hẹn gặp trên sàn đấu
+            <Link to="/ecosystem" className="btn-primary mt-7">
+              Hiểu hơn về Ocvoivoii
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>
           </div>
         </article>
 
-        <aside className="glass-panel flex flex-col justify-between bg-gradient-to-br from-purple-500/15 to-cyan-400/5 p-7 lg:col-span-4">
-          <div>
-            <div
-              aria-hidden="true"
-              className="flex h-24 w-24 items-center justify-center rounded-3xl border border-cyan-300/20 bg-slate-950/50 text-3xl font-black text-cyan-200"
-            >
-              ỐC
-            </div>
-            <p className="eyebrow mt-7">Người chơi · Người kể chuyện</p>
-            <h2 className="text-2xl font-black text-white">Ocvoivoii</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-400">
-              Chơi hết mình, giữ sự chân thành và luôn dành một chỗ cho những
-              câu chuyện của cộng đồng.
-            </p>
-          </div>
-          <div className="mt-7 flex flex-wrap gap-2">
-            {["Gaming", "Livestream", "Du lịch", "Âm nhạc"].map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </aside>
-
-        <article className="glass-panel p-7 lg:col-span-5">
+        <article className="glass-panel relative min-w-0 overflow-hidden p-7 sm:p-9 lg:col-span-8">
           <p className="eyebrow">Những điều đang xây dựng</p>
           <h2 className="text-2xl font-black text-white">Cột mốc của Ốc</h2>
-          <ol className="mt-7 space-y-7">
-            {milestones.map(({ title, description, Icon }) => (
-              <li key={title} className="flex items-start gap-4">
-                <span className="icon-tile shrink-0">
-                  <Icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-                <div>
-                  <h3 className="font-bold leading-6 text-white">{title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-400">
-                    {description}
-                  </p>
-                </div>
-              </li>
-            ))}
+          <ol className="mt-8">
+            {milestones.map(
+              ({ id, dateLabel, title, description, Icon }, index) => (
+                <li
+                  key={id}
+                  className="relative grid grid-cols-[48px_minmax(0,1fr)] gap-x-4 pb-8 last:pb-0 sm:gap-x-6"
+                >
+                  {index < milestones.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute bottom-0 left-[23px] top-12 w-px bg-gradient-to-b from-purple-400/50 to-cyan-400/20"
+                    />
+                  )}
+
+                  <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-400/30 bg-slate-900 text-purple-300 shadow-[0_0_24px_rgba(168,85,247,0.08)]">
+                    <Icon aria-hidden="true" className="h-5 w-5" />
+                  </span>
+
+                  <div className="min-w-0 pt-1">
+                    {dateLabel && (
+                      <p className="mb-2 text-xs font-semibold tracking-wide text-cyan-300">
+                        {dateLabel}
+                      </p>
+                    )}
+
+                    <h3 className="text-lg font-bold leading-7 text-white">
+                      {title}
+                    </h3>
+
+                    <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-400">
+                      {description}
+                    </p>
+                  </div>
+                </li>
+              ),
+            )}
           </ol>
         </article>
 
-        <article className="glass-panel p-7 lg:col-span-7">
+        <article className="glass-panel min-w-0 self-start p-7 lg:col-span-5">
+          <p className="eyebrow">Ngoài những trận game</p>
+
+          <h2 className="text-2xl font-black text-white">
+            Những góc khác của Ốc
+          </h2>
+
+          <div className="mt-5 divide-y divide-white/10">
+            {brands
+              .filter((brand) => brand.group === "main")
+              .map((brand) => {
+                const platforms = (brand.platforms ?? []).filter(
+                  (platform) =>
+                    brand.links?.[platform] &&
+                    validatePlatformUrl(platform, brand.links[platform]),
+                );
+
+                return (
+                  <div
+                    key={brand.id}
+                    className="min-w-0 py-4 first:pt-0 last:pb-0"
+                  >
+                    <h3 className="text-base font-bold text-white">
+                      {brand.name}
+                    </h3>
+
+                    {platforms.length > 0 ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {platforms.map((platform) => (
+                          <ExternalLink
+                            key={platform}
+                            href={brand.links[platform]}
+                            className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300 transition hover:border-cyan-300/40 hover:text-cyan-200"
+                          >
+                            <PlatformIcon
+                              platform={platform}
+                              className="h-4 w-4 shrink-0"
+                            />
+                            {platformLabels[platform] ?? platform}
+                          </ExternalLink>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-2 text-xs text-slate-500">
+                        Kênh đang cập nhật liên kết.
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+
+          <Link
+            to="/ecosystem"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-purple-200 transition hover:text-cyan-200"
+          >
+            Khám phá toàn bộ hệ sinh thái
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Link>
+        </article>
+
+        <article className="glass-panel min-w-0 self-start p-7 lg:col-span-7">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="eyebrow">Góc làm việc</p>
@@ -183,21 +279,6 @@ export default function About() {
               </div>
             ))}
           </dl>
-        </article>
-
-        <article className="glass-panel p-7 lg:col-span-12">
-          <p className="eyebrow">Ngoài những trận game</p>
-          <h2 className="text-2xl font-black text-white">
-            Nhiều câu chuyện, cùng một người kể
-          </h2>
-
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {brands
-              .filter((brand) => brand.group === "main")
-              .map((brand) => (
-                <BrandCard key={brand.id} brand={brand} compact />
-              ))}
-          </div>
         </article>
 
         <article className="glass-panel p-7 lg:col-span-12">
