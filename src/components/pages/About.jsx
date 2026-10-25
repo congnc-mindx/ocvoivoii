@@ -44,9 +44,9 @@ export default function About() {
   return (
     <section className="page-container py-14 lg:py-20">
       <PageIntro
-        eyebrow="Phía sau màn hình"
-        title="Chào bạn, mình là Ốc."
-        description="Một người thích game, những chuyến đi và việc kể lại những trải nghiệm đó theo cách gần gũi nhất."
+        eyebrow="Nhân vật hư cấu"
+        title="Chào bạn, mình là Ocvoivoii."
+        description="Thường được biết đến với"
       />
       <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-12">
         <aside className="glass-panel flex min-w-0 flex-col self-stretch overflow-hidden p-5 sm:p-7 lg:col-span-4 lg:col-start-9 lg:row-start-1">
@@ -92,7 +92,7 @@ export default function About() {
               </span>
 
               <h2 className="min-w-0 text-2xl font-black leading-tight text-white">
-                Hành trình trở thành Ocvoivoii
+                Hành trình của một Streamer cỏ
               </h2>
             </div>
             <div className="mt-5 space-y-4 text-sm leading-8 text-slate-300 sm:text-base">

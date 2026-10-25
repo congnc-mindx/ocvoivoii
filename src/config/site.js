@@ -7,25 +7,6 @@ export const navigation = [
   { to: "/feedback", label: "Góp ý giải đấu" },
 ];
 
-// Video minh họa giao diện; không phải danh sách video chính thức của kênh.
-export const featuredVideos = [
-  {
-    id: "e_E9W2vsRbQ",
-    title: "Bước vào thế giới VALORANT",
-    category: "Video mẫu · Giới thiệu trò chơi",
-  },
-  {
-    id: "h1Kp9x_ADZw",
-    title: "Không khí trước giờ giao tranh",
-    category: "Video mẫu · Điện ảnh VALORANT",
-  },
-  {
-    id: "sUoSPryMZr0",
-    title: "Khi đồng đội cùng tỏa sáng",
-    category: "Video mẫu · Điện ảnh VALORANT",
-  },
-];
-
 export const pageTitles = {
   "/": "Trang chủ",
   "/about": "Giới thiệu",

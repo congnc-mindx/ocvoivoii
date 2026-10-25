@@ -10,7 +10,7 @@ import {
   Trophy,
   Users,
 } from "lucide-react";
-import { featuredVideos } from "../../config/site";
+import useYouTubeVideos from "../../hooks/useYouTubeVideos";
 import useBrands from "../../hooks/useBrands";
 import { getGamingChannels } from "../../data/ecosystem";
 import ExternalLink from "../ExternalLink";
@@ -19,6 +19,13 @@ import EcosystemPreview from "../ecosystem/EcosystemPreview";
 
 export default function Home() {
   const { brands } = useBrands();
+  const {
+    videos,
+    channelUrl,
+    loading: videosLoading,
+    error: videosError,
+    retry: retryVideos,
+  } = useYouTubeVideos();
   const socialChannels = getGamingChannels(brands);
   const youtube = socialChannels.find((channel) => channel.id === "youtube");
 
@@ -163,14 +170,17 @@ export default function Home() {
           <div>
             <p className="eyebrow">Bật lên và tận hưởng</p>
             <h2 id="videos-heading" className="section-title">
-              Góc video nổi bật
+              Video mới từ Ocvoivoii Gaming
             </h2>
             <p className="mt-3 text-sm leading-7 text-slate-400">
-              Các video hiện tại là nội dung mẫu minh họa giao diện.
+              Những video mới nhất từ kênh của Ốc, được cập nhật tự động.
             </p>
           </div>
 
-          <ExternalLink href={youtube?.url} className="btn-secondary shrink-0">
+          <ExternalLink
+            href={channelUrl || youtube?.url}
+            className="btn-secondary shrink-0"
+          >
             <PlatformIcon
               platform="youtube"
               className="h-5 w-5 text-cyan-300"
@@ -178,9 +188,28 @@ export default function Home() {
             Kênh YouTube của Ốc
           </ExternalLink>
         </div>
+        {videosLoading && (
+          <p role="status" className="mb-6 text-sm text-slate-400">
+            Đang tải video mới…
+          </p>
+        )}
+
+        {videosError && (
+          <div role="alert" className="glass-panel mb-6 p-5">
+            <p className="text-sm leading-7 text-slate-300">{videosError}</p>
+
+            <button
+              type="button"
+              onClick={retryVideos}
+              className="btn-secondary mt-4"
+            >
+              Thử tải lại
+            </button>
+          </div>
+        )}
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {featuredVideos.map((video) => (
+          {videos.map((video) => (
             <article
               key={video.id}
               className="glass-panel card-hover overflow-hidden"
@@ -199,7 +228,10 @@ export default function Home() {
               <div className="p-5">
                 <p className="flex items-center gap-2 text-xs font-medium text-purple-300">
                   <Play aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-                  {video.category}
+                  Đăng ngày{" "}
+                  {new Date(video.publishedAt).toLocaleDateString("vi-VN", {
+                    timeZone: "Asia/Ho_Chi_Minh",
+                  })}
                 </p>
                 <h3 className="mt-3 text-lg font-bold leading-7 text-white">
                   {video.title}
