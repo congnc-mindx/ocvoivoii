@@ -55,7 +55,7 @@ function NavigationGroup({ label, items, pathname, onNavigate }) {
       <ul
         id={panelId}
         hidden={!expanded}
-        className="ml-4 mt-1 space-y-1 rounded-xl border border-white/10 bg-slate-900 p-1.5 xl:absolute xl:top-full xl:left-0 xl:ml-0 xl:mt-2 xl:min-w-52 xl:shadow-xl xl:shadow-black/40"
+        className="ml-4 mt-1 space-y-1 rounded-xl border border-white/10 bg-slate-900 p-1.5 min-[1100px]:absolute min-[1100px]:top-full min-[1100px]:left-0 min-[1100px]:ml-0 min-[1100px]:mt-2 min-[1100px]:min-w-52 min-[1100px]:shadow-xl min-[1100px]:shadow-black/40"
       >
         {items.map(({ to, label: itemLabel }) => (
           <li key={to}>
@@ -114,7 +114,7 @@ export default function Navbar() {
     function pointerDown(event) {
       if (!headerRef.current?.contains(event.target)) close();
     }
-    const media = window.matchMedia("(min-width: 1280px)");
+    const media = window.matchMedia("(min-width: 1100px)");
     function breakpoint(event) {
       if (event.matches) close();
     }
@@ -133,7 +133,7 @@ export default function Navbar() {
       ref={headerRef}
       className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/85 backdrop-blur-xl"
     >
-      <div className="page-container flex h-20 items-center justify-between gap-2 sm:gap-4">
+      <div className="page-container site-nav-row flex items-center justify-between gap-2 sm:gap-4">
         <Link
           to="/"
           aria-label="Ocvoivoii — Trang chủ"
@@ -148,7 +148,7 @@ export default function Navbar() {
             <span className="text-purple-400">.</span>
           </span>
         </Link>
-        <nav aria-label="Điều hướng chính" className="hidden xl:block">
+        <nav aria-label="Điều hướng chính" className="hidden min-[1100px]:block">
           <ul className="flex items-center gap-1">
             <NavigationLinks key={location.key} pathname={pathname} />
           </ul>
@@ -162,7 +162,7 @@ export default function Navbar() {
             aria-controls="mobile-navigation"
             aria-label={open ? "Đóng menu điều hướng" : "Mở menu điều hướng"}
             onClick={() => setOpenKey(open ? null : location.key)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white xl:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white min-[1100px]:hidden"
           >
             {open ? (
               <X aria-hidden="true" className="h-5 w-5" />
@@ -176,7 +176,7 @@ export default function Navbar() {
         id="mobile-navigation"
         aria-label="Điều hướng trên điện thoại"
         hidden={!open}
-        className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-white/10 bg-slate-950 px-5 py-4 xl:hidden"
+        className="max-h-[calc(100dvh-var(--site-nav-height)-1px)] overflow-y-auto border-t border-white/10 bg-slate-950 px-5 py-4 min-[1100px]:hidden"
       >
         <ul className="mx-auto flex max-w-7xl flex-col gap-2">
           {open && (

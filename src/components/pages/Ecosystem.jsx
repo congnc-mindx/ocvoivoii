@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import PageIntro from "../PageIntro";
+import PageLayout from "../PageLayout";
 import BrandCard from "../ecosystem/BrandCard";
 import useBrands from "../../hooks/useBrands";
 import { ecosystemGroups } from "../../data/ecosystem";
@@ -7,12 +7,11 @@ import { ecosystemGroups } from "../../data/ecosystem";
 export default function Ecosystem() {
   const { brands, loading, error, reload } = useBrands();
   return (
-    <section className="page-container py-14 lg:py-20">
-      <PageIntro
-        eyebrow="Kết nối những câu chuyện"
-        title="Thế giới của Ocvoivoii."
-        description="Bắt đầu từ game, mở ra những chuyến đi, âm nhạc và các dự án được xây dựng cùng nhau."
-      />
+    <PageLayout
+      eyebrow="Kết nối những câu chuyện"
+      title="Thế giới của Ocvoivoii."
+      description="Bắt đầu từ game, mở ra những chuyến đi, âm nhạc và các dự án được xây dựng cùng nhau."
+    >
       {loading ? (
         <div
           role="status"
@@ -63,6 +62,6 @@ export default function Ecosystem() {
           </p>
         </div>
       )}
-    </section>
+    </PageLayout>
   );
 }

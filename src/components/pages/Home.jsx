@@ -44,7 +44,7 @@ export default function Home() {
           <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
         </div>
 
-        <div className="page-container grid items-center gap-14 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:py-28">
+        <div className="page-container home-hero grid items-start gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12">
           <div>
             <span className="status-badge">
               <span aria-hidden="true" className="relative flex h-2 w-2">
@@ -54,24 +54,24 @@ export default function Home() {
               Mùa giải mới đang khởi tranh
             </span>
 
-            <p className="eyebrow mt-7">Chào mừng đến với Ocvoivoii</p>
+            <p className="eyebrow mt-5">Chào mừng đến với Ocvoivoii</p>
 
             <h1
               id="home-heading"
-              className="text-5xl font-black leading-[1.1] tracking-tight text-white sm:text-6xl xl:text-7xl"
+              className="home-hero-title font-black leading-[1.1] tracking-tight text-white"
             >
               Chơi hết mình.
               <br />
               <span className="gradient-text">Vui hết cỡ.</span>
             </h1>
 
-            <p className="mt-7 max-w-xl text-base leading-8 text-slate-400 sm:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-7 text-slate-400">
               Từ những pha xử lý khó đỡ đến các trận đấu căng thẳng. Cùng Ốc
               khám phá game, kết nối đồng đội và tạo nên những khoảnh khắc đáng
               nhớ.
             </p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link to="/register" className="btn-primary">
                 Đăng ký ngay
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
@@ -81,7 +81,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-400">
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-400">
               <li className="inline-flex items-center gap-2">
                 <Gamepad2
                   aria-hidden="true"
@@ -103,13 +103,13 @@ export default function Home() {
             </ul>
           </div>
 
-          <div className="relative mx-auto w-full max-w-md">
+          <div className="relative w-full max-w-md lg:justify-self-end">
             <div
               aria-hidden="true"
               className="absolute -inset-5 rounded-full bg-purple-500/15 blur-3xl"
             />
 
-            <div className="glass-panel relative overflow-hidden p-7 sm:p-9">
+            <div className="glass-panel relative overflow-hidden p-6 sm:p-7">
               <div className="flex items-center justify-between gap-4">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
                   Đấu trường cộng đồng
@@ -122,13 +122,13 @@ export default function Home() {
 
               <div
                 aria-hidden="true"
-                className="relative my-10 flex h-48 items-center justify-center"
+                className="relative my-5 flex h-36 items-center justify-center"
               >
-                <div className="absolute h-44 w-44 rotate-12 rounded-[2.5rem] border border-purple-400/30 bg-purple-500/5" />
-                <div className="absolute h-44 w-44 -rotate-12 rounded-[2.5rem] border border-cyan-300/25 bg-cyan-400/5" />
-                <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-purple-300/30 bg-gradient-to-br from-purple-500/25 to-cyan-400/10 shadow-[0_0_60px_rgba(168,85,247,0.2)]">
+                <div className="absolute h-32 w-32 rotate-12 rounded-[2.5rem] border border-purple-400/30 bg-purple-500/5" />
+                <div className="absolute h-32 w-32 -rotate-12 rounded-[2.5rem] border border-cyan-300/25 bg-cyan-400/5" />
+                <div className="flex h-24 w-24 items-center justify-center rounded-3xl border border-purple-300/30 bg-gradient-to-br from-purple-500/25 to-cyan-400/10 shadow-[0_0_60px_rgba(168,85,247,0.2)]">
                   <Trophy
-                    className="h-16 w-16 text-purple-200"
+                    className="h-12 w-12 text-purple-200"
                     strokeWidth={1.5}
                   />
                 </div>
@@ -138,7 +138,7 @@ export default function Home() {
               <p className="text-sm font-bold tracking-[0.15em] text-cyan-300">
                 ỐC THƯỢNG ĐÀI
               </p>
-              <h2 className="mt-3 text-3xl font-black leading-tight text-white">
+              <h2 className="mt-3 text-2xl font-black leading-tight text-white">
                 Kèo đã lên.
                 <br />
                 Bạn sẵn sàng chưa?
@@ -149,7 +149,7 @@ export default function Home() {
               </p>
               <Link
                 to="/register"
-                className="btn-secondary mt-7 w-full justify-between"
+                className="btn-secondary mt-5 w-full justify-between"
               >
                 Giành một chỗ trên sàn đấu
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />

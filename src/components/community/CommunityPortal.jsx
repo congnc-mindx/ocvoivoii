@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import { db } from "../../firebase";
 import Fields from "./Fields";
+import PageLayout from "../PageLayout";
 import useCommunitySessions from "./useCommunitySessions";
 import {
   COMMUNITY_EVENTS,
@@ -284,24 +285,23 @@ export default function CommunityPortal({ feedback = false }) {
   const selected = sessions.find((session) => session.id === selectedId);
 
   return (
-    <section className="page-container py-14">
-      <p className="eyebrow">Hang Ocvoivoii · Cùng chơi, cùng lớn</p>
-
-      <h1 className="page-title">
-        {feedback
-          ? "Khảo sát & đánh giá Ốc Thượng Đài"
-          : "Chọn kèo. Ghi tên. Lên sàn."}
-      </h1>
-
-      <div className="my-6 flex flex-wrap gap-4 text-sm text-cyan-300">
-        <Link to="/register" className="underline">
-          Đăng ký hoạt động
-        </Link>
-        <Link to="/feedback" className="underline">
-          Gửi đánh giá giải đấu
-        </Link>
-      </div>
-
+    <PageLayout
+      eyebrow="Hang Ocvoivoii · Cùng chơi, cùng lớn"
+      title={feedback ? "Khảo sát & đánh giá Ốc Thượng Đài" : "Chọn kèo. Ghi tên. Lên sàn."}
+      description={feedback
+        ? "Chia sẻ trải nghiệm để BTC cải thiện các giải Ốc Thượng Đài tiếp theo."
+        : "Chọn một đợt đang mở để tham gia hoạt động cùng cộng đồng."}
+      actions={
+        <nav aria-label="Hoạt động cộng đồng" className="flex flex-wrap gap-2">
+          <NavLink to="/register" end className={({ isActive }) => `nav-link ${isActive ? "nav-link-active" : ""}`}>
+            Đăng ký hoạt động
+          </NavLink>
+          <NavLink to="/feedback" end className={({ isActive }) => `nav-link ${isActive ? "nav-link-active" : ""}`}>
+            Gửi đánh giá giải đấu
+          </NavLink>
+        </nav>
+      }
+    >
       {loading && (
         <p role="status">
           Đang tải các đợt hoạt động. Nếu chờ lâu, hãy kiểm tra mạng và tải lại
@@ -368,6 +368,6 @@ export default function CommunityPortal({ feedback = false }) {
           )}
         </div>
       </div>
-    </section>
+    </PageLayout>
   );
 }

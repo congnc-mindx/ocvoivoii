@@ -1,5 +1,6 @@
 import { ArrowRight, ChevronDown, Gamepad2, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
+import PageLayout from "../PageLayout";
 
 const sections = [
   {
@@ -46,28 +47,23 @@ const sections = [
 
 export default function Faq() {
   return (
-    <div className="page-container py-12 sm:py-16">
-      <div className="mx-auto max-w-4xl">
-        <header className="glass-panel relative overflow-hidden p-6 sm:p-10">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.20),transparent_64%)]" />
-          <div className="relative">
-            <p className="eyebrow">Hỏi Ốc đáp</p>
-            <h1 className="page-title mt-3">Câu hỏi thường gặp</h1>
-            <p className="mt-4 max-w-xl leading-7 text-slate-300">
-              Từ mấy chuyện vui về Ốc đến những điều cần biết trước khi lên sàn Ốc Thượng Đài.
-            </p>
-            <nav aria-label="Các mục câu hỏi" className="mt-6 flex flex-wrap gap-3">
-              {sections.map(({ id, title }) => (
-                <Link key={id} to={{ hash: `#${id}` }} className="btn-secondary">
-                  {title}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </header>
-
+    <PageLayout
+      eyebrow="Hỏi Ốc đáp"
+      title="Câu hỏi thường gặp"
+      description="Từ mấy chuyện vui về Ốc đến những điều cần biết trước khi lên sàn Ốc Thượng Đài."
+      actions={
+        <nav aria-label="Các mục câu hỏi" className="flex flex-wrap gap-3">
+          {sections.map(({ id, title }) => (
+            <Link key={id} to={{ hash: `#${id}` }} className="btn-secondary">
+              {title}
+            </Link>
+          ))}
+        </nav>
+      }
+    >
+      <div className="space-y-10">
         {sections.map(({ id, title, description, Icon, entries }) => (
-          <section key={id} id={id} aria-labelledby={`${id}-title`} className="mt-12 scroll-mt-24">
+          <section key={id} id={id} aria-labelledby={`${id}-title`}>
             <div className="mb-5 flex items-center gap-4">
               <span className="icon-tile shrink-0">
                 <Icon aria-hidden="true" className="h-5 w-5" />
@@ -93,7 +89,7 @@ export default function Faq() {
           </section>
         ))}
 
-        <aside className="glass-panel mt-12 p-6 sm:p-8">
+        <aside className="glass-panel p-6 sm:p-8">
           <h2 className="text-xl font-bold text-white">Hẹn bạn trên sàn Ốc Thượng Đài</h2>
           <p className="mt-2 max-w-xl leading-7 text-slate-300">
             Vào trang Giải đấu để xem đợt đăng ký, thể thức và lịch thi đấu mới nhất từ BTC.
@@ -106,6 +102,6 @@ export default function Faq() {
           </div>
         </aside>
       </div>
-    </div>
+    </PageLayout>
   );
 }

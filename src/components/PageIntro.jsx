@@ -1,15 +1,10 @@
-// src/components/PageIntro.jsx
-export default function PageIntro({ eyebrow, title, description, children }) {
+export default function PageIntro({ id, eyebrow, title, description, children }) {
   return (
-    <header className="mb-10 max-w-3xl">
-      <p className="eyebrow">{eyebrow}</p>
-      <h1 className="page-title">{title}</h1>
-      {description && (
-        <p className="mt-5 text-base leading-8 text-slate-400 sm:text-lg">
-          {description}
-        </p>
-      )}
-      {children}
+    <header className="page-intro">
+      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+      <h1 id={id} className="page-title">{title}</h1>
+      {description && <p className="page-intro-description">{description}</p>}
+      {children && <div className="page-intro-actions">{children}</div>}
     </header>
   );
 }

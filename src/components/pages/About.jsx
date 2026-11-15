@@ -8,7 +8,7 @@ import {
   Mic2,
   Monitor,
 } from "lucide-react";
-import PageIntro from "../PageIntro";
+import PageLayout from "../PageLayout";
 import ExternalLink from "../ExternalLink";
 import PlatformIcon from "../icons/PlatformIcon";
 import { getGamingChannels } from "../../data/ecosystem";
@@ -42,12 +42,11 @@ export default function About() {
   const { brands } = useBrands();
   const socialChannels = getGamingChannels(brands);
   return (
-    <section className="page-container py-14 lg:py-20">
-      <PageIntro
-        eyebrow="Nhân vật hư cấu"
-        title="Chào bạn, mình là Ốc"
-        description="Thường được biết đến với"
-      />
+    <PageLayout
+      eyebrow="Nhân vật hư cấu"
+      title="Chào bạn, mình là Ốc"
+      description="Thường được biết đến với"
+    >
       <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-12">
         <aside className="glass-panel flex min-w-0 flex-col self-stretch overflow-hidden p-5 sm:p-7 lg:col-span-4 lg:col-start-9 lg:row-start-1">
           <p className="eyebrow mb-5">Hề internet · Vua Guardian</p>
@@ -129,7 +128,7 @@ export default function About() {
             id="about-timeline-title"
             className="text-2xl font-black text-white"
           >
-            Nhà ráng rặn nội dung 🤷🏻
+            Một Streamer Cỏ
           </h2>
 
           <ol className="mt-9">
@@ -267,6 +266,6 @@ export default function About() {
           </div>
         </article>
       </div>
-    </section>
+    </PageLayout>
   );
 }

@@ -8,7 +8,7 @@ import {
   Info,
   ShieldCheck,
 } from "lucide-react";
-import PageIntro from "../PageIntro";
+import PageLayout from "../PageLayout";
 import { tournamentRules } from "../../data/tournamentRules";
 
 const orderedRules = [...tournamentRules].sort((a, b) => a.order - b.order);
@@ -65,12 +65,11 @@ export default function Rules() {
   }
 
   return (
-    <section className="page-container py-14 lg:py-20">
-      <PageIntro
-        eyebrow="Ốc Thượng Đài"
-        title="Hiểu luật. Chơi đẹp. Lên sàn."
-        description="Tìm hiểu nguyên tắc chung và thể thức của từng giải trước khi gửi đăng ký."
-      />
+    <PageLayout
+      eyebrow="Ốc Thượng Đài"
+      title="Hiểu luật. Chơi đẹp. Lên sàn."
+      description="Tìm hiểu nguyên tắc chung và thể thức của từng giải trước khi gửi đăng ký."
+    >
 
       <div
         role="tablist"
@@ -230,6 +229,6 @@ export default function Rules() {
           )}
         </div>
       ))}
-    </section>
+    </PageLayout>
   );
 }

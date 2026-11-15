@@ -11,6 +11,10 @@
   --text-muted: #94a3b8;
   --border: rgb(255 255 255 / 10%);
   --focus-ring: #67e8f9;
+  --site-nav-height: 4.25rem;
+  --site-gutter: clamp(1rem, 3vw, 2.25rem);
+  --page-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  --page-bottom: clamp(2.5rem, 5vw, 4rem);
 
   font-family:
     Inter,
@@ -36,7 +40,7 @@
 html {
   min-width: 320px;
   scroll-behavior: smooth;
-  scroll-padding-top: 6.5rem;
+  scroll-padding-top: calc(var(--site-nav-height) + 1rem);
 }
 
 body {
@@ -86,7 +90,44 @@ input:disabled {
   width: 100%;
   max-width: 80rem;
   margin-inline: auto;
-  padding-inline: 1.25rem;
+  padding-inline: var(--site-gutter);
+}
+
+.site-nav-row {
+  min-height: var(--site-nav-height);
+}
+
+.content-page,
+.home-hero {
+  padding-block: var(--page-top) var(--page-bottom);
+}
+
+.page-intro {
+  margin-block-end: clamp(1.5rem, 3vw, 2rem);
+}
+
+.page-intro .eyebrow {
+  margin-block-end: 0.625rem;
+}
+
+.page-intro .page-title {
+  font-size: clamp(1.875rem, 3.5vw, 3rem);
+  overflow-wrap: anywhere;
+}
+
+.page-intro-description {
+  max-width: 68ch;
+  margin-block-start: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.page-intro-actions {
+  margin-block-start: 1rem;
+}
+
+.home-hero-title {
+  font-size: clamp(2.25rem, 4.5vw, 4rem);
 }
 
 .skip-link {
@@ -387,12 +428,6 @@ a.social-icon-link:hover {
 .registration-option input:disabled + .registration-option-box {
   cursor: wait;
   opacity: 0.65;
-}
-
-@media (min-width: 1024px) {
-  .page-container {
-    padding-inline: 2rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
