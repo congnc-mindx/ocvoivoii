@@ -1,0 +1,33 @@
+    match /player_profiles/{uid} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+      function canWriteProfile() {
+        return isOwner() && request.auth.token.firebase.sign_in_provider == 'google.com';
+      }
+      function validProfile(p) {
+        let fields = ['fullName', 'rank', 'gender', 'role', 'riotId',
+          'trackerUrl', 'facebookUrl', 'discordId', 'discordJoined', 'createdAt', 'updatedAt'];
+        return p.keys().hasAll(fields) && p.keys().hasOnly(fields)
+          && p.fullName is string && p.fullName.size() >= 2 && p.fullName.size() <= 100
+          && p.fullName.matches('.*[^\\s].*') && !p.fullName.matches('(?s).*\\p{Cc}.*')
+          && p.rank is string && p.rank.matches('^(Unranked|Radiant|(Iron|Bronze|Silver|Gold|Platinum|Diamond|Ascendant|Immortal) [123])$')
+          && p.gender in ['Nam', 'Nữ', 'Khác', 'Không muốn tiết lộ']
+          && p.role in ['Duelist', 'Controller', 'Initiator', 'Sentinel', 'Flex']
+          && p.riotId is string && p.riotId.matches('^[^#\\s][^#\\r\\n]{2,15}#[A-Za-z0-9]{3,5}$')
+          && !p.riotId.matches('(?s).*\\p{Cc}.*') && !p.riotId.matches('.*\\s#.*')
+          && p.trackerUrl is string && p.trackerUrl.size() <= 500
+          && p.trackerUrl.matches('^https://tracker[.]gg/valorant/profile/riot/[^/?#\\s]+%23[A-Za-z0-9]{3,5}/overview$')
+          && p.facebookUrl is string && p.facebookUrl.size() <= 500
+          && p.facebookUrl.matches('^https://((www|m)[.])?(facebook[.]com|fb[.]com)/[^/\\s][^\\s]*$')
+          && p.discordId is string && p.discordId.matches('^[0-9]{17,20}$')
+          && p.discordJoined == true
+          && p.createdAt is timestamp && p.updatedAt == request.time;
+      }
+      allow get: if isOwner();
+      allow list, delete: if false;
+      allow create: if canWriteProfile() && validProfile(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+      allow update: if canWriteProfile() && validProfile(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }

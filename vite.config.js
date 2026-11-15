@@ -25,4 +25,7 @@ function githubPagesFallback() {
 export default defineConfig({
   base: "/ocvoivoii/",
   plugins: [react(), tailwindcss(), githubPagesFallback()],
+  server: {
+    open: true, // Tự động mở trình duyệt mặc định khi chạy lệnh dev
+  },
 });

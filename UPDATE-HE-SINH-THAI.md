@@ -28,6 +28,7 @@ Vào /ocvoivoii/login, đăng nhập bằng tài khoản hiện tại. Trong adm
 Bấm Khởi tạo danh mục để tạo tám bản ghi mặc định trong collection ecosystem_brands. Thao tác này chỉ tạo các mục còn thiếu, không ghi đè mục đã có.
 
 Các nhóm:
+
 - Những thế giới của Ốc: Ocvoivoii Gaming, Ốc Du Ký, zWhis, Ốc Bán Rong.
 - Những dự án cùng nhau: chuyện miu & ốc, Hang Ocvoivoii · Nhạc & Demo.
 - Bạn bè của Ốc: Người nghèo đi bụi, lem gẻng gâu gâu.

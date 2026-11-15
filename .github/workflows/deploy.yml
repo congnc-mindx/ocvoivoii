@@ -55,6 +55,7 @@ jobs:
           VITE_TIKTOK_URL: ${{ vars.VITE_TIKTOK_URL }}
           VITE_FACEBOOK_URL: ${{ vars.VITE_FACEBOOK_URL }}
           VITE_COMMUNITY_URL: ${{ vars.VITE_COMMUNITY_URL }}
+          VITE_DISCORD_INVITE_URL: ${{ vars.VITE_DISCORD_INVITE_URL }}
           VITE_DONATE_URL: ${{ vars.VITE_DONATE_URL }}
 
       - name: Verify build output

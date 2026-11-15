@@ -1,0 +1,187 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/admin_users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admin_users/$(request.auth.uid)).data.role == 'admin'
+        && get(/databases/$(database)/documents/admin_users/$(request.auth.uid)).data.active == true;
+    }
+    function validLink(value) {
+      return value is string && value.size() <= 2048
+        && (value == '' || value.matches('^https://[^\\s]+$'));
+    }
+    function validBrand() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['name','description','group','order','visible','platforms','links','createdAt','updatedAt'])
+        && data.keys().hasOnly(['name','description','group','order','visible','platforms','links','createdAt','updatedAt'])
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 100 && data.name.matches('.*\\S.*')
+        && data.description is string && data.description.size() >= 1 && data.description.size() <= 600
+        && data.description.matches('(?s).*\\S.*')
+        && data.group in ['main','shared','friends']
+        && data.order is int && data.order >= 0 && data.order <= 9999
+        && data.visible is bool
+        && data.platforms is list && data.platforms.size() >= 1 && data.platforms.size() <= 8
+        && data.platforms.hasOnly(['youtube','tiktok','facebook','instagram','facebookGroup','discord','spotify','appleMusic'])
+        && data.platforms.toSet().size() == data.platforms.size()
+        && data.links is map && data.links.keys().hasOnly(data.platforms) && data.links.keys().hasAll(data.platforms)
+        && validLink(data.links.get('youtube','')) && validLink(data.links.get('tiktok',''))
+        && validLink(data.links.get('facebook','')) && validLink(data.links.get('instagram',''))
+        && validLink(data.links.get('facebookGroup','')) && validLink(data.links.get('discord',''))
+        && validLink(data.links.get('spotify','')) && validLink(data.links.get('appleMusic',''))
+        && data.createdAt is timestamp && data.updatedAt is timestamp && data.updatedAt == request.time;
+    }
+    match /admin_users/{userId} {
+      allow get: if isSignedIn() && request.auth.uid == userId;
+      allow list, create, update, delete: if false;
+    }
+    match /ecosystem_brands/{brandId} {
+      allow get, list: if isAdmin() || resource.data.visible == true;
+      allow create: if isAdmin() && validBrand() && request.resource.data.createdAt == request.time;
+      allow update: if isAdmin() && validBrand() && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if false;
+    }
+    match /player_profiles/{uid} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+      function canWriteProfile() {
+        return isOwner() && request.auth.token.firebase.sign_in_provider == 'google.com';
+      }
+      function validProfile(p) {
+        let fields = ['fullName', 'rank', 'gender', 'role', 'riotId',
+          'trackerUrl', 'facebookUrl', 'discordId', 'discordJoined', 'createdAt', 'updatedAt'];
+        return p.keys().hasAll(fields) && p.keys().hasOnly(fields)
+          && p.fullName is string && p.fullName.size() >= 2 && p.fullName.size() <= 100
+          && p.fullName.matches('.*[^\\s].*') && !p.fullName.matches('(?s).*\\p{Cc}.*')
+          && p.rank is string && p.rank.matches('^(Unranked|Radiant|(Iron|Bronze|Silver|Gold|Platinum|Diamond|Ascendant|Immortal) [123])$')
+          && p.gender in ['Nam', 'Nữ', 'Khác', 'Không muốn tiết lộ']
+          && p.role in ['Duelist', 'Controller', 'Initiator', 'Sentinel', 'Flex']
+          && p.riotId is string && p.riotId.matches('^[^#\\s][^#\\r\\n]{2,15}#[A-Za-z0-9]{3,5}$')
+          && !p.riotId.matches('(?s).*\\p{Cc}.*') && !p.riotId.matches('.*\\s#.*')
+          && p.trackerUrl is string && p.trackerUrl.size() <= 500
+          && p.trackerUrl.matches('^https://tracker[.]gg/valorant/profile/riot/[^/?#\\s]+%23[A-Za-z0-9]{3,5}/overview$')
+          && p.facebookUrl is string && p.facebookUrl.size() <= 500
+          && p.facebookUrl.matches('^https://((www|m)[.])?(facebook[.]com|fb[.]com)/[^/\\s][^\\s]*$')
+          && p.discordId is string && p.discordId.matches('^[0-9]{17,20}$')
+          && p.discordJoined == true
+          && p.createdAt is timestamp && p.updatedAt == request.time;
+      }
+      allow get: if isOwner();
+      allow list, delete: if false;
+      allow create: if canWriteProfile() && validProfile(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+      allow update: if canWriteProfile() && validProfile(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    function text(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max
+        && (min == 0 || v.matches('(?s).*\\S.*'));
+    }
+    function tournament(event) {
+      return event in ['thap-dien-mai-phuc', 'doc-co-cau-bai'];
+    }
+    function validSession(d) {
+      let keys = ['eventId','title','startsAt','minimumDiscordLevel','rulesVersion',
+        'rulesSummary','visible','registrationOpen','feedbackOpen','createdAt','updatedAt'];
+      return d.keys().hasAll(keys) && d.keys().hasOnly(keys)
+        && (tournament(d.eventId) || d.eventId == 'night-market')
+        && text(d.title,1,120) && d.startsAt is timestamp
+        && d.minimumDiscordLevel is int
+        && (d.eventId == 'night-market' ? d.minimumDiscordLevel == 0 && d.feedbackOpen == false
+          : d.minimumDiscordLevel >= 1 && d.minimumDiscordLevel <= 1000)
+        && text(d.rulesVersion,1,60) && text(d.rulesSummary,1,6000)
+        && d.visible is bool && d.registrationOpen is bool && d.feedbackOpen is bool
+        && d.createdAt is timestamp && d.updatedAt == request.time;
+    }
+    match /event_sessions/{id} {
+      allow read: if isAdmin() || resource.data.visible == true;
+      allow create: if isAdmin() && validSession(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+      allow update: if isAdmin() && validSession(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visible','registrationOpen','feedbackOpen','updatedAt']);
+      allow delete: if false;
+    }
+
+    function matchesOpenSession(d, feedback) {
+      let session = get(/databases/$(database)/documents/event_sessions/$(d.sessionId)).data;
+      return d.schemaVersion == 1 && session.visible == true && session.eventId == d.eventId
+        && session.rulesVersion == d.rulesVersion && d.createdAt == request.time
+        && d.answers is map && (feedback ? session.feedbackOpen == true : session.registrationOpen == true);
+    }
+    function validRegistration(d) {
+      let keys = ['schemaVersion','sessionId','eventId','rulesVersion','answers','createdAt','status','roleVerified'];
+      return d.keys().hasAll(keys) && d.keys().hasOnly(keys)
+        && text(d.sessionId,1,128) && d.sessionId.matches('^[^/]+$')
+        && d.status == 'pending' && d.roleVerified == false && matchesOpenSession(d, false);
+    }
+    function validTournamentAnswers(a) {
+      let keys = ['riotId','discordIdentity','preferredServer','roleClaim','rulesAccepted','imageUrl','message'];
+      return a.keys().hasAll(keys) && a.keys().hasOnly(keys)
+        && a.riotId is string && a.riotId.matches('^[^#\\s][^#\\r\\n]{0,63}#[A-Za-z0-9]{3,5}$')
+        && a.discordIdentity is string && a.discordIdentity.matches('^[0-9]{17,20}$')
+        && a.preferredServer in ['singapore','hong-kong','tokyo']
+        && a.roleClaim in ['has_role','request_review'] && a.rulesAccepted == true
+        && text(a.imageUrl,0,2048) && (a.imageUrl == '' || a.imageUrl.matches('^https://[^\\s@]+$'))
+        && text(a.message,0,2000);
+    }
+    function validNightAnswers(a) {
+      let keys = ['displayName','discordIdentity','interaction','appearanceConsent','responsibilityConsent','message'];
+      return a.keys().hasAll(keys) && a.keys().hasOnly(keys)
+        && text(a.displayName,1,100) && text(a.discordIdentity,1,100)
+        && a.interaction in ['voice_and_screen','screen_only']
+        && a.appearanceConsent == 'yes' && a.responsibilityConsent == true
+        && text(a.message,0,2000);
+    }
+    function validReview(nightMarket) {
+      let d = request.resource.data;
+      return isAdmin() && d.diff(resource.data).affectedKeys().hasOnly(['status','roleVerified','reviewedAt'])
+        && d.status in ['pending','confirmed','backup','rejected'] && d.roleVerified is bool
+        && d.reviewedAt == request.time && (nightMarket || d.status != 'confirmed' || d.roleVerified);
+    }
+    match /event_registrations/{id} {
+      allow create: if validRegistration(request.resource.data) && tournament(request.resource.data.eventId)
+        && validTournamentAnswers(request.resource.data.answers);
+      allow read: if isAdmin();
+      allow update: if validReview(false);
+      allow delete: if false;
+    }
+    match /night_market_registrations/{id} {
+      allow create: if validRegistration(request.resource.data) && request.resource.data.eventId == 'night-market'
+        && validNightAnswers(request.resource.data.answers);
+      allow read: if isAdmin();
+      allow update: if validReview(true);
+      allow delete: if false;
+    }
+
+    function rating(v) { return v is int && v >= 1 && v <= 5; }
+    function choices(v, allowed) {
+      return v is list && v.hasOnly(allowed) && v.size() <= allowed.size() && v.toSet().size() == v.size();
+    }
+    function validFeedbackAnswers(a) {
+      let common = ['role','mediaUpdate','nextFormat','ideas'];
+      let player = common.concat(['formatRating','adminRating','issues','solutions']);
+      let viewer = common.concat(['streamRating','casterRating','retention']);
+      return a.keys().hasAll(common) && a.mediaUpdate in ['fast','normal','slow']
+        && a.nextFormat in ['keep','expand','mix','other_game'] && text(a.ideas,0,3000)
+        && ((a.role == 'general' && a.keys().hasOnly(common))
+          || (a.role == 'player' && a.keys().hasAll(player) && a.keys().hasOnly(player)
+            && rating(a.formatRating) && rating(a.adminRating) && text(a.solutions,0,3000)
+            && choices(a.issues,['registration','schedule','lobby','fairness','balance','other']))
+          || (a.role == 'viewer' && a.keys().hasAll(viewer) && a.keys().hasOnly(viewer)
+            && rating(a.streamRating) && rating(a.casterRating)
+            && choices(a.retention,['expertise','humor','observer','schedule','interaction'])));
+    }
+    match /event_feedback/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['schemaVersion','sessionId','eventId','rulesVersion','answers','createdAt'])
+        && text(request.resource.data.sessionId,1,128) && request.resource.data.sessionId.matches('^[^/]+$')
+        && tournament(request.resource.data.eventId) && matchesOpenSession(request.resource.data,true)
+        && validFeedbackAnswers(request.resource.data.answers);
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

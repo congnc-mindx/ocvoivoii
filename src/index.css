@@ -423,3 +423,32 @@ select:disabled {
 }
 
 .account-nav-link { display: flex; align-items: center; gap: 0.5rem; }
+
+.player-access-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(100% - 1.5rem, 43rem);
+  max-height: 90dvh;
+  overflow-y: auto;
+  border: 1px solid rgb(167 139 250 / 30%);
+  border-radius: 1.25rem;
+  background: #0f172a;
+  color: #f1f5f9;
+  padding: clamp(1rem, 5vw, 2rem);
+  box-shadow: 0 20px 90px rgb(0 0 0 / 55%);
+  color-scheme: dark;
+}
+.player-access-dialog::backdrop {
+  background: rgb(2 6 23 / 82%);
+  backdrop-filter: blur(5px);
+}
+.player-access-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+}
+@media (max-width: 380px) {
+  .player-access-trigger { padding-inline: .55rem; font-size: .775rem; }
+  .player-access-trigger svg { display: none; }
+}

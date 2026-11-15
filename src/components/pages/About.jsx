@@ -45,7 +45,7 @@ export default function About() {
     <section className="page-container py-14 lg:py-20">
       <PageIntro
         eyebrow="Nhân vật hư cấu"
-        title="Chào bạn, mình là Ocvoivoii."
+        title="Chào bạn, mình là Ốc"
         description="Thường được biết đến với"
       />
       <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-12">
@@ -92,7 +92,7 @@ export default function About() {
               </span>
 
               <h2 className="min-w-0 text-2xl font-black leading-tight text-white">
-                Hành trình của một Streamer cỏ
+                Ocvoivoii Gaming
               </h2>
             </div>
             <div className="mt-5 space-y-4 text-sm leading-8 text-slate-300 sm:text-base">
@@ -123,13 +123,13 @@ export default function About() {
           aria-labelledby="about-timeline-title"
           className="glass-panel min-w-0 p-7 sm:p-9 lg:col-span-12 lg:col-start-1"
         >
-          <p className="eyebrow">Từ những ngày đầu</p>
+          <p className="eyebrow">Hành trình phát triển của</p>
 
           <h2
             id="about-timeline-title"
             className="text-2xl font-black text-white"
           >
-            Cột mốc của Ốc
+            Nhà ráng rặn nội dung 🤷🏻
           </h2>
 
           <ol className="mt-9">
@@ -245,7 +245,9 @@ export default function About() {
         </article>
 
         <article className="glass-panel p-7 lg:col-span-12">
-          <p className="eyebrow">Không chỉ gặp nhau trên sóng</p>
+          <p className="eyebrow">
+            AE bốn bể 1 nhà, người dưng khác họ mãi là AE
+          </p>
           <h2 className="text-2xl font-black text-white">Kết nối với Ốc</h2>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

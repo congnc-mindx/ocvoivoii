@@ -9,20 +9,18 @@ import {
   useNavigationType,
 } from "react-router-dom";
 import { ArrowLeft, Compass } from "lucide-react";
-import AuthProvider from "./contexts/AuthProvider";
-import RequireAdmin from "./components/auth/RequireAdmin";
-import AdminLayout from "./components/admin/AdminLayout";
+import Articles from "./components/pages/Articles";
+import Faq from "./components/pages/Faq";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import Rules from "./components/pages/Rules";
 import CommunityPortal from "./components/community/CommunityPortal";
-import CommunityAdmin from "./components/community/CommunityAdmin";
-import Login from "./components/pages/Login";
+
 import Ecosystem from "./components/pages/Ecosystem";
-import AdminDashboard from "./components/pages/AdminDashboard";
-import EcosystemAdmin from "./components/pages/admin/EcosystemAdmin";
+
 import { pageTitles } from "./config/site";
 
 function RouteEffects() {
@@ -95,28 +93,20 @@ export default function App() {
   const basename = import.meta.env.BASE_URL.replace(/\/+$/, "") || "/";
   return (
     <BrowserRouter basename={basename}>
-      <AuthProvider>
-        <RouteEffects />
-        <Routes>
-          <Route element={<SiteLayout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="rules" element={<Rules />} />
-            <Route path="register" element={<CommunityPortal />} />
-            <Route path="feedback" element={<CommunityPortal feedback />} />
-            <Route path="ecosystem" element={<Ecosystem />} />
-            <Route path="login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-          <Route element={<RequireAdmin />}>
-            <Route path="admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="ecosystem" element={<EcosystemAdmin />} />
-              <Route path="community" element={<CommunityAdmin />} />
-            </Route>
-          </Route>
-        </Routes>
-      </AuthProvider>
+      <RouteEffects />
+      <Routes>
+        <Route element={<SiteLayout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="rules" element={<Rules />} />
+          <Route path="register" element={<CommunityPortal />} />
+          <Route path="articles" element={<Articles />} />
+          <Route path="faq" element={<Faq />} />
+          <Route path="feedback" element={<CommunityPortal feedback />} />
+          <Route path="ecosystem" element={<Ecosystem />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

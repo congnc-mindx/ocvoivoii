@@ -4,13 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDoZZ_iDjD2S6Oug1Xt4A-8ABCOE8ymA3A",
-  authDomain: "ocvoivoii-3b61b.firebaseapp.com",
-  projectId: "ocvoivoii-3b61b",
-  storageBucket: "ocvoivoii-3b61b.firebasestorage.app",
-  messagingSenderId: "959348152939",
-  appId: "1:959348152939:web:6325b91be2f112952eef2e",
-  measurementId: "G-97L09QQPD2",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 export const firebaseConfigured = Boolean(
